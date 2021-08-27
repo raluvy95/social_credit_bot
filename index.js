@@ -22,7 +22,7 @@ for (const commands of cmds) {
 
 client.on("messageCreate", async message => {
     if(!client.config.has(message.guildId)) {
-        client.config.set(message.guildId, {slient: false, cooldown: 30, points: 5})
+        client.config.set(message.guildId, {slient: false, cooldown: 60, points: 5})
     }
     if (message.author.bot) return;
     if (message.content.toLowerCase().startsWith(".eval ")) {
@@ -35,15 +35,15 @@ client.on("messageCreate", async message => {
     }
     const now = Date.now()
     const ca = client.config.get(`${message.guildId}.cooldown`) * 1000;
-    if (client.cooldown.has(message.author.id)) {
-        const et = client.cooldown.get(message.author.id) + ca;
+    if (client.cooldown.has(message.channel.id)) {
+        const et = client.cooldown.get(message.channel.id) + ca;
         if (now < et) {
             return
         }
     }
-    client.cooldown.set(message.author.id, now);
+    client.cooldown.set(message.channel.id, now);
     setTimeout(() => {
-        client.cooldown.delete(message.author.id);
+        client.cooldown.delete(message.channel.id);
     }, ca);
     if (!client.XP.has(message.author.id)) {
         client.XP.set(message.author.id, {xp: 0, tempxp: 0, level: 'D'})
