@@ -1,0 +1,15 @@
+# your client's ID, required for register slash commands
+clientID: "CLIENT ID"
+
+# used for testing slash commands (GuildCommands)
+guildID: "SERVER ID"
+
+# if true, guildID is required. 
+guildSlashOnly: false
+
+# Owners' ID, required to use admin commands
+owners: ["YOUR DISCORD ID", "OTHER DEVS' ID", "AND SO ON..."]
+
+# your discord bot's token, required for run a bot.
+token: "DISCORD BOT TOKEN"
+
