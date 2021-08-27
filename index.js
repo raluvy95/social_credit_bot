@@ -8,7 +8,7 @@ const configuration = jsyaml.load(fs.readFileSync('./config.yaml', 'utf8'))
 
 const SOCIAL_CREDIT_APPROVE = "https://cdn.discordapp.com/attachments/868162230288531457/880179345111523328/unknown.png"
 const SOCIAL_CREDIT_DENY = "https://cdn.discordapp.com/attachments/868162230288531457/880179374412947526/unknown.png"
-
+const RANK_UP = "https://media.discordapp.net/attachments/838781799080394830/880895044075278386/unknown.png"
 
 const cmds = fs.readdirSync("./cmds/")
 for (const commands of cmds) {
@@ -52,6 +52,7 @@ client.on("messageCreate", async message => {
     let XP = client.XP.get(message.author.id)
     function level() {
         let {level, xp} = client.XP.get(message.author.id)
+        let oldLevel = level
         if(xp < 0) level = 'F'
         else if(xp <= 599 && xp >= 0 ) level = 'D'
         else if(xp <= 849 && xp >= 599) level = 'C'
@@ -60,7 +61,10 @@ client.on("messageCreate", async message => {
         else if(xp <= 1000 && xp >= 1029) level = 'A+'
         else if(xp <= 1030 && xp >= 1049) level ='AA'
         else if(xp >= 1050) level = 'AAA'
-        client.XP.set(`${message.author.id}.level`, level)
+        if(oldLevel != level) {
+        	client.XP.set(`${message.author.id}.level`, level)
+            send(`${message.author.username} - RANK UP! ${level}`)
+        }
     }
     const slient = client.config.get(`${message.guildId}.slient`)
     function send(msg) {
@@ -74,10 +78,10 @@ client.on("messageCreate", async message => {
         client.XP.set(`${message.author.id}.tempxp`, 0)
         if(XP.tempxp < 0) {
             client.XP.subtract(`${message.author.id}.xp`, Math.abs(XP.tempxp))
-            send(SOCIAL_CREDIT_DENY)
+            //send(SOCIAL_CREDIT_DENY)
         } else {
             client.XP.add(`${message.author.id}.xp`, XP.tempxp)
-            send(SOCIAL_CREDIT_APPROVE)
+            //send(SOCIAL_CREDIT_APPROVE)
         }
         level()
     }
